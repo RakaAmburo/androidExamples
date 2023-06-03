@@ -4,33 +4,25 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.os.SystemClock;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
 
-public class MainActivity extends BaseActivityAndRecognitionListener {
+public class BaseActivityAndRecognitionListener extends Activity implements RecognitionListener {
 
     private TextView capturedVoiceCmd;
     private Button activateSpeechRecognitionButton;
@@ -42,27 +34,7 @@ public class MainActivity extends BaseActivityAndRecognitionListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        capturedVoiceCmd = findViewById(R.id.resultMessage);
-        activateSpeechRecognitionButton = findViewById(R.id.mantener);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-        setTitle("Voice control 1.0");
-        activateSpeechRecognitionButton.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    askForPermission();
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressBar.setIndeterminate(true);
-                    createSpeech();
-                    speech.startListening(recognizerIntent);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    capturedVoiceCmd.setText("");
-                    break;
-            }
-            return false;
-        });
+
 
     }
 
@@ -81,22 +53,10 @@ public class MainActivity extends BaseActivityAndRecognitionListener {
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
     }
 
-    private void askForPermission() {
-        String permission = "android.permission.RECORD_AUDIO";
-        if (ContextCompat.checkSelfPermission(MainActivity.this, permission) !=
-                PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    permission)) {
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{permission}, 1);
-            } else {
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{permission}, 1);
-            }
-        }
+    @Override
+    public void onReadyForSpeech(Bundle params) {
+
     }
-
-
 
     @Override
     public void onBeginningOfSpeech() {
@@ -185,22 +145,7 @@ public class MainActivity extends BaseActivityAndRecognitionListener {
 
     @Override
     public void onResults(Bundle results) {
-        ArrayList<String> matches = results
-                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-        if (SystemClock.elapsedRealtime() - lastClickTime < 2000) {
-            return;
-        }
-        lastClickTime = SystemClock.elapsedRealtime();
-        if (matches.size() == 0) {
-            capturedVoiceCmd.setText("Listening Service Error");
-        } else {
-            capturedVoiceCmd.setText(matches.get(0));
-            if (matches.get(0).equalsIgnoreCase("computer unlock")){
-                String message = sendBroadcast("UNLOCK_MACHINE");
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private String sendBroadcast(String messageStr) {
@@ -262,4 +207,5 @@ public class MainActivity extends BaseActivityAndRecognitionListener {
             speech.destroy();
         }
     }
+
 }
