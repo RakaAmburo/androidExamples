@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.automate.loginapp"
+        applicationId "com.automate.loginapp.pattern"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -66,4 +66,5 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation 'com.ebanx:swipe-button:0.8.3'
+    implementation 'com.andrognito.patternlockview:patternlockview:1.0.0'
 }

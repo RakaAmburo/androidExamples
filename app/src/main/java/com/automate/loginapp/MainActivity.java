@@ -9,36 +9,60 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.andrognito.patternlockview.PatternLockView;
+import com.andrognito.patternlockview.listener.PatternLockViewListener;
+import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.ebanx.swipebtn.SwipeButton;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private int lockState = 1;
+    PatternLockView mPatternLockView;
+    String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SwipeButton swipeButton = findViewById(R.id.swipe);
 
-        swipeButton.setOnStateChangeListener(active -> {
-            lockState = lockState + 1;
-            if (lockState % 2 == 0) {
-                String message = sendBroadcast("UNLOCK_MACHINE");
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                try {
-                    Thread.sleep(4000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+        password = "630487";
+        mPatternLockView = (PatternLockView) findViewById(R.id.pattern_lock_view);
+        mPatternLockView.addPatternLockListener(new PatternLockViewListener() {
+            @Override
+            public void onStarted() {
+
+            }
+
+            @Override
+            public void onProgress(List<PatternLockView.Dot> progressPattern) {
+
+            }
+
+            @Override
+            public void onComplete(List<PatternLockView.Dot> pattern) {
+                // if drawn pattern is equal to created pattern you will navigate to home screen
+                if (password.equals(PatternLockUtils.patternToString(mPatternLockView, pattern))) {
+                    Toast.makeText(MainActivity.this, "Password ok", Toast.LENGTH_SHORT).show();
+                    mPatternLockView.clearPattern();
+                } else {
+                    // other wise you will get error wrong password
+                    Toast.makeText(MainActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                    mPatternLockView.clearPattern();
                 }
-                finish();
+            }
+
+            @Override
+            public void onCleared() {
+
             }
         });
+
+
     }
 
     private String sendBroadcast(String messageStr) {
