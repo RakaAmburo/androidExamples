@@ -7,7 +7,10 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
@@ -22,47 +25,33 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    PatternLockView mPatternLockView;
-    String password;
+    ToggleButton togglebutton;
+    TextView textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        password = "630487";
-        mPatternLockView = (PatternLockView) findViewById(R.id.pattern_lock_view);
-        mPatternLockView.addPatternLockListener(new PatternLockViewListener() {
-            @Override
-            public void onStarted() {
 
-            }
+        togglebutton
+                = (ToggleButton)findViewById(
+                R.id.toggleButton);
 
-            @Override
-            public void onProgress(List<PatternLockView.Dot> progressPattern) {
+        textview
+                = (TextView)findViewById(
+                R.id.textView);
 
-            }
+    }
 
-            @Override
-            public void onComplete(List<PatternLockView.Dot> pattern) {
-                // if drawn pattern is equal to created pattern you will navigate to home screen
-                if (password.equals(PatternLockUtils.patternToString(mPatternLockView, pattern))) {
-                    Toast.makeText(MainActivity.this, "Password ok", Toast.LENGTH_SHORT).show();
-                    mPatternLockView.clearPattern();
-                } else {
-                    // other wise you will get error wrong password
-                    Toast.makeText(MainActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
-                    mPatternLockView.clearPattern();
-                }
-            }
-
-            @Override
-            public void onCleared() {
-
-            }
-        });
-
-
+    public void onToggleClick(View view)
+    {
+        if (togglebutton.isChecked()) {
+            textview.setText("Toggle is ON");
+        }
+        else {
+            textview.setText("Toggle is OFF");
+        }
     }
 
     private String sendBroadcast(String messageStr) {
