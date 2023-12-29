@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
-import com.ebanx.swipebtn.SwipeButton;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -45,12 +44,16 @@ public class MainActivity extends Activity {
 
             @Override
             public void onComplete(List<PatternLockView.Dot> pattern) {
-                // if drawn pattern is equal to created pattern you will navigate to home screen
                 if (password.equals(PatternLockUtils.patternToString(mPatternLockView, pattern))) {
                     Toast.makeText(MainActivity.this, "Password ok", Toast.LENGTH_SHORT).show();
-                    mPatternLockView.clearPattern();
+                    String message = sendBroadcast("UNLOCK_MACHINE");
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    finish();
                 } else {
-                    // other wise you will get error wrong password
                     Toast.makeText(MainActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
                     mPatternLockView.clearPattern();
                 }

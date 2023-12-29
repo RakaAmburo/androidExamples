@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cce7e8"
+    android:background="#2C8C8C8C"
     tools:context=".MainActivity">
 
     <com.andrognito.patternlockview.PatternLockView
@@ -13,8 +13,8 @@
         android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:contentDescription="@string/bottom_sheet_behavior"
-        app:correctStateColor="@color/purple_200"
-        app:normalStateColor="@color/purple_200"
+        app:correctStateColor="#E91E63"
+        app:normalStateColor="#E91E63"
         app:wrongStateColor="@color/teal_700" />
 
     <!--Text View to display title-->
