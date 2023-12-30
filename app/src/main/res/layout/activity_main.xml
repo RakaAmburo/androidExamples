@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#cce7e8"
     tools:context=".MainActivity">
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:onClick="onToggleClick"
-        />
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/toggleButton"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+    <TableLayout
+        android:layout_width="220dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:stretchColumns="1"
+        tools:ignore="UselessParent,TextSizeCheck">
+        <TableRow
+            android:layout_height="10dp"
+            tools:ignore="UselessParent">
+            <Button
+                android:id="@+id/switch_1"
+                android:layout_width="110dp"
+                android:onClick="onToggleClick" />
+            <Button
+                android:id="@+id/switch_2"
+                android:onClick="onToggleClick" />
+        </TableRow>
+
+        <TableRow android:layout_height="10dp">
+            <Button
+                android:id="@+id/switch_3"
+                android:layout_width="110dp"
+                android:onClick="onToggleClick" />
+            <Button
+                android:id="@+id/switch_4"
+                android:onClick="onToggleClick" />
+        </TableRow>
+    </TableLayout>
 
 </RelativeLayout>
