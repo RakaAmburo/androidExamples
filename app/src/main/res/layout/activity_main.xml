@@ -25,10 +25,12 @@
         </TableRow>
 
         <TableRow android:layout_height="10dp">
+
             <Button
                 android:id="@+id/switch_3"
                 android:layout_width="110dp"
-                android:onClick="onToggleClick" />
+                android:onClick="onToggleClick"
+                tools:ignore="SpeakableTextPresentCheck" />
             <Button
                 android:id="@+id/switch_4"
                 android:onClick="onToggleClick" />
