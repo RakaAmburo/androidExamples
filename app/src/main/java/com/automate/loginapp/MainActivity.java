@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
         String response = udpTransceiver.sendBroadcast("SWITCH_STATUS");
 
         String[] statuses = response.split(":");
+        /* only when there is an error we show a message */
         if (statuses.length != ids.length) {
             Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
         } else {

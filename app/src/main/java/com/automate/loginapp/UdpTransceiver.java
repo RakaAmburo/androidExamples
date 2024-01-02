@@ -42,6 +42,7 @@ public class UdpTransceiver {
         byte[] receiveByte = new byte[1024];
         try (DatagramSocket receivingSocket = new DatagramSocket(receivingPort)) {
             DatagramPacket receivePack = new DatagramPacket(receiveByte, receiveByte.length);
+            receivingSocket.setSoTimeout(5000);
             receivingSocket.receive(receivePack);
             statusMessage = new String(receiveByte, receivePack.getOffset(), receivePack.getLength());
         } catch (IOException e) {
